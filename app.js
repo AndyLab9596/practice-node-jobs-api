@@ -14,8 +14,13 @@ const connectDB = require('./db/connect');
 const authRouter = require('./routes/auth');
 const jobsRouter = require('./routes/jobs')
 
+// error handler
+const notFoundErrorMiddleware = require('./middleware/not-found')
+const errorHandlerMiddleware = require('./middleware/error-handler')
+
 // middleware
 app.use(express.json())
+
 
 // routes
 app.get('/', (req, res) => {
@@ -24,6 +29,10 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', jobsRouter)
+
+// middleware
+app.use(errorHandlerMiddleware)
+app.use(notFoundErrorMiddleware)
 
 const port = process.env.PORT || 3000;
 const start = async () => {
